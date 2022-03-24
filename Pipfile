@@ -9,6 +9,7 @@ marshmallow = "*"
 pymongo = "*"
 dnspython = "*"
 marshmallow-dataclass = "*"
+python-dotenv = "*"
 
 [dev-packages]
 pylint = "*"
@@ -16,3 +17,6 @@ gunicorn = "*"
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+serve = "flask run -h 0.0.0.0"
