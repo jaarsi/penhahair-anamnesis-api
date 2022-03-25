@@ -1,4 +1,3 @@
-#!.venv/bin/gunicorn
 # pylint: disable=wrong-import-position
 
 from dotenv import load_dotenv
