@@ -1,56 +1,13 @@
-from urllib.parse import urljoin
-from functools import wraps
-from flask import Blueprint, jsonify, request, redirect, session, url_for
+from flask import Blueprint, jsonify, request
 from marshmallow import ValidationError
-from . import services, auth
+from .auth import authentication_required
+from .. import services
 
 router = Blueprint("api", __name__)
-
-@router.errorhandler(Exception)
-def handle_general_error(error: Exception):
-    return jsonify(error=str(error)), 500
 
 @router.errorhandler(ValidationError)
 def handle_validation_error(error: ValidationError):
     return jsonify(errors=error.messages), 400
-
-
-def authentication_required(f):
-    # pylint: disable=invalid-name
-    @wraps(f)
-    def g(*args, **kwargs):
-        state, token = session.get("state", None), session.get("token", None)
-
-        if not auth.google_userinfo(token=token, state=state):
-            session["next"] = request.endpoint
-            return redirect(url_for("api.authentication_route"))
-
-        return f(*args, **kwargs)
-
-    return g
-
-# Authentication
-@router.get("/auth")
-def authentication_route():
-    state, token = session.get("state", None), session.get("token", None)
-    redirect_uri = urljoin(request.host_url, url_for("api.authentication_callback_route"))
-    authorization_url, state = auth.google_authorization(
-        token=token,
-        state=state,
-        redirect_uri=redirect_uri,
-    )
-    session["state"] = state
-    return redirect(authorization_url)
-
-@router.get("/auth/callback")
-def authentication_callback_route():
-    state, token = session.get("state", None), session.get("token", None)
-    redirect_uri = urljoin(request.host_url, url_for("api.authentication_callback_route"))
-    token = auth.google_token(request.url, token=token, state=state, redirect_uri=redirect_uri)
-    session["token"] = token
-    session["user_info"] = auth.google_userinfo(token=token, state=state)
-    target_url = session.get("next", None)
-    return redirect(url_for(target_url))
 
 # General
 @router.get("/database_info")

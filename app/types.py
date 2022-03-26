@@ -19,6 +19,7 @@ ObjectIdFieldType = mmdc.NewType("ObjectIdType", str, field=ObjectIdField)
 @dataclass
 class Customer:
     _id: ObjectIdFieldType
+    user_id: str
     name: str
 
 class CustomerSchema(mmdc.class_schema(Customer)):
@@ -28,6 +29,7 @@ class CustomerSchema(mmdc.class_schema(Customer)):
 @dataclass
 class AnamnesisField:
     _id: ObjectIdFieldType
+    user_id: str
     name: str
     description: str
     position: int
@@ -40,6 +42,7 @@ class AnamnesisFieldSchema(mmdc.class_schema(AnamnesisField)):
 @dataclass
 class Anamnesis:
     _id: ObjectIdFieldType
+    user_id: str
     customer_id: str
     time: datetime
     answers: List[dict]
