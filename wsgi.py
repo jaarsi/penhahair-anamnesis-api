@@ -8,4 +8,5 @@ from flask import Flask
 from app.router import router
 
 app = Flask(__name__, static_folder=None)
+app.secret_key = "ultrasupersecretkey"
 app.register_blueprint(router)

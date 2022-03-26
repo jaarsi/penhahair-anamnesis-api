@@ -15,7 +15,11 @@
             },
             "args": [
                 "run",
-                "--no-debugger"
+                "--no-debugger",
+                "--host",
+                "0.0.0.0",
+                "--cert",
+                "adhoc"
             ],
             "jinja": true,
             "justMyCode": true

@@ -7,16 +7,17 @@ name = "pypi"
 flask = "*"
 marshmallow = "*"
 pymongo = "*"
-dnspython = "*"
 marshmallow-dataclass = "*"
 python-dotenv = "*"
+requests-oauthlib = "*"
 
 [dev-packages]
 pylint = "*"
 gunicorn = "*"
+pyopenssl = "*"
 
 [requires]
 python_version = "3.8"
 
 [scripts]
-serve = "flask run -h 0.0.0.0"
+serve = "flask run --host 0.0.0.0 --cert 'adhoc'"

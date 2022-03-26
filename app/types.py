@@ -26,24 +26,24 @@ class CustomerSchema(mmdc.class_schema(Customer)):
         unknown = mm.EXCLUDE
 
 @dataclass
-class AnamneseField:
+class AnamnesisField:
     _id: ObjectIdFieldType
     name: str
     description: str
     position: int
     enabled: bool
 
-class AnamneseFieldSchema(mmdc.class_schema(AnamneseField)):
+class AnamnesisFieldSchema(mmdc.class_schema(AnamnesisField)):
     class Meta:
         unknown = mm.EXCLUDE
 
 @dataclass
-class Anamnese:
+class Anamnesis:
     _id: ObjectIdFieldType
     customer_id: str
     time: datetime
     answers: List[dict]
 
-class AnamneseSchema(mmdc.class_schema(Anamnese)):
+class AnamnesisSchema(mmdc.class_schema(Anamnesis)):
     class Meta:
         unknown = mm.EXCLUDE
