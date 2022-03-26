@@ -1,4 +1,4 @@
-from urllib.parse import urljoin, urlencode, urlparse
+from urllib.parse import urljoin
 from functools import wraps
 from flask import Blueprint, jsonify, request, redirect, session, url_for
 from marshmallow import ValidationError
