@@ -9,12 +9,6 @@ router = Blueprint("api", __name__)
 def handle_validation_error(error: ValidationError):
     return jsonify(errors=error.messages), 400
 
-# General
-@router.get("/database_info")
-@authentication_required
-def get_database_info_route():
-    return jsonify(database_info=services.get_database_info())
-
 # Customers
 @router.get("/customers")
 @authentication_required
