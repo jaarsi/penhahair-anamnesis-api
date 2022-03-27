@@ -1,1 +1,1 @@
-web: gunicorn wsgi:app
+web: pip install gunicorn && gunicorn wsgi:app
