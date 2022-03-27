@@ -15,6 +15,18 @@ def handle_validation_error(error: ValidationError):
 def list_customers_route():
     return jsonify(customers=services.get_customers())
 
+@router.post("/customer")
+@authentication_required
+def create_customer_route():
+    response = services.create_customer(request.get_json())
+    return jsonify(customer=response), 201
+
+@router.put("/customer/<customer_id>")
+@authentication_required
+def update_customer_route(customer_id: str):
+    response = services.update_customer(customer_id, request.get_json())
+    return jsonify(customer=response)
+
 # Anamnesis Fields
 @router.get("/anamnesis_fields")
 @authentication_required
@@ -31,14 +43,14 @@ def create_anamnesis_field_route():
 @authentication_required
 def update_anamnesis_field_route(anamnesis_field_id: str):
     response = services.update_anamnesis_field(anamnesis_field_id, request.get_json())
-    return jsonify(anamnesis_field=response), 200
+    return jsonify(anamnesis_field=response)
 
 # Anamnesis
 @router.get("/anamnesis/<anamnesis_id>")
 @authentication_required
 def get_anamnesis_route(anamnesis_id: str):
     response = services.get_anamnesis(anamnesis_id)
-    return jsonify(anamnesis=response), 200
+    return jsonify(anamnesis=response)
 
 @router.post("/anamnesis")
 @authentication_required
@@ -50,7 +62,7 @@ def create_anamnesis_route():
 @authentication_required
 def update_anamnesis_route(anamnesis_id: str):
     response = services.update_anamnesis(anamnesis_id, request.get_json())
-    return jsonify(anamnesis=response), 200
+    return jsonify(anamnesis=response)
 
 @router.get("/customer/<customer_id>/anamnesis")
 @authentication_required

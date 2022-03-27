@@ -25,6 +25,23 @@ def get_customers() -> List[types.Customer]:
         results = list(db.get_collection("customers").find())
         return customer_schema.load(data=results, many=True)
 
+def create_customer(customer: dict) -> types.Customer:
+    if errors := customer_schema.validate(data=customer, partial=("_id",)):
+        raise ValidationError(errors)
+
+    with get_database() as db:
+        db.get_collection("customers").insert_one(customer)
+        return anamnesis_schema.load(data=customer)
+
+def update_customer(customer_id: str, customer: dict) -> types.Customer:
+    if errors := customer_schema.validate(data=customer, partial=("_id",)):
+        raise ValidationError(errors)
+
+    with get_database() as db:
+        db.get_collection("customers").find_one_and_replace(
+            ObjectId(customer_id), customer
+        )
+        return anamnesis_schema.load(data=customer)
 # Anamnesis Fields
 def get_anamnesis_fields_list() -> List[types.AnamnesisField]:
     with get_database() as db:
