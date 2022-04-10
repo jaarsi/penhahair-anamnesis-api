@@ -43,21 +43,20 @@ def get_customers(user_id: str) -> List[types.Customer]:
         return customer_schema.load(data=results, many=True)
 
 def create_customer(user_id: str, customer: dict) -> types.Customer:
-    if errors := customer_schema.validate(data=customer, partial=("_id",)):
+    if errors := customer_schema.validate(data=customer, partial=("_id", "user_id",)):
         raise ValidationError(errors)
 
     with get_database() as db:
-        db.get_collection("customers").insert_one({
-            **customer,
-            "user_id": user_id
-        })
-        return anamnesis_schema.load(data=customer)
+        customer.update(user_id=ObjectId(user_id))
+        db.get_collection("customers").insert_one(customer)
+        return customer_schema.load(data=customer)
 
 def update_customer(user_id: str, customer_id: str, customer: dict) -> types.Customer:
-    if errors := customer_schema.validate(data=customer, partial=("_id",)):
+    if errors := customer_schema.validate(data=customer, partial=("_id", "user_id",)):
         raise ValidationError(errors)
 
     with get_database() as db:
+        customer.update(user_id=ObjectId(user_id))
         db.get_collection("customers").find_one_and_replace(
             {
                 "_id": ObjectId(customer_id),
@@ -65,7 +64,7 @@ def update_customer(user_id: str, customer_id: str, customer: dict) -> types.Cus
             },
             customer
         )
-        return anamnesis_schema.load(data=customer)
+        return customer_schema.load(data=customer)
 
 # Anamnesis Fields
 def get_anamnesis_fields_list(user_id: str) -> List[types.AnamnesisField]:
@@ -77,14 +76,12 @@ def get_anamnesis_fields_list(user_id: str) -> List[types.AnamnesisField]:
         return anamnesis_field_schema.load(data=results, many=True)
 
 def create_anamnesis_field(user_id: str, anamnesis_field: dict) -> types.AnamnesisField:
-    if errors := anamnesis_field_schema.validate(data=anamnesis_field, partial=("_id",)):
+    if errors := anamnesis_field_schema.validate(data=anamnesis_field, partial=("_id", "user_id",)):
         raise ValidationError(errors)
 
     with get_database() as db:
-        db.get_collection("anamnesis_field").insert_one({
-            **anamnesis_field,
-            "user_id": user_id
-        })
+        anamnesis_field.update(user_id=ObjectId(user_id))
+        db.get_collection("anamnesis_field").insert_one(anamnesis_field)
         return anamnesis_field_schema.load(data=anamnesis_field)
 
 def update_anamnesis_field(
@@ -92,10 +89,11 @@ def update_anamnesis_field(
     anamnesis_field_id: str,
     anamnesis_field: dict
 ) -> types.AnamnesisField:
-    if errors := anamnesis_field_schema.validate(data=anamnesis_field, partial=("_id",)):
+    if errors := anamnesis_field_schema.validate(data=anamnesis_field, partial=("_id", "user_id",)):
         raise ValidationError(errors)
 
     with get_database() as db:
+        anamnesis_field.update(user_id=ObjectId(user_id))
         db.get_collection("anamnesis_field").find_one_and_replace(
             {
                 "_id": ObjectId(anamnesis_field_id),
@@ -115,21 +113,20 @@ def get_anamnesis(user_id: str, anamnesis_id: str) -> List[types.Anamnesis]:
         return anamnesis_schema.load(data=result)
 
 def create_anamnesis(user_id: str, anamnesis: dict) -> types.Anamnesis:
-    if errors := anamnesis_schema.validate(data=anamnesis, partial=("_id",)):
+    if errors := anamnesis_schema.validate(data=anamnesis, partial=("_id", "user_id",)):
         raise ValidationError(errors)
 
     with get_database() as db:
-        db.get_collection("anamnesis").insert_one({
-            **anamnesis,
-            "user_id": user_id
-        })
+        anamnesis.update(user_id=ObjectId(user_id))
+        db.get_collection("anamnesis").insert_one(anamnesis)
         return anamnesis_schema.load(data=anamnesis)
 
 def update_anamnesis(user_id: str, anamnesis_id: str, anamnesis: dict) -> types.Anamnesis:
-    if errors := anamnesis_schema.validate(data=anamnesis, partial=("_id",)):
+    if errors := anamnesis_schema.validate(data=anamnesis, partial=("_id", "user_id",)):
         raise ValidationError(errors)
 
     with get_database() as db:
+        anamnesis.update(user_id=ObjectId(user_id))
         db.get_collection("anamnesis").find_one_and_replace(
             {
                 "_id": ObjectId(anamnesis_id),

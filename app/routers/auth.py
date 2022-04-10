@@ -41,7 +41,7 @@ def token_route():
 
     return jwt.encode(
         {
-            "exp": datetime.utcnow() + timedelta(minutes=5),
+            "exp": datetime.utcnow() + timedelta(days=7),
             "user_id": user._id,
         },
         consts.SECRET_KEY,
