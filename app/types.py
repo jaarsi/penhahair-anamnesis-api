@@ -17,9 +17,28 @@ class ObjectIdField(mm.fields.Field):
 ObjectIdFieldType = mmdc.NewType("ObjectIdType", str, field=ObjectIdField)
 
 @dataclass
+class APIConsumer:
+    _id: ObjectIdFieldType
+    description: str
+
+class APIConsumerSchema(mmdc.class_schema(APIConsumer)):
+    class Meta:
+        unknown = mm.EXCLUDE
+
+@dataclass
+class User:
+    _id: ObjectIdFieldType
+    email: str
+    password: str
+
+class UserSchema(mmdc.class_schema(User)):
+    class Meta:
+        unknown = mm.EXCLUDE
+
+@dataclass
 class Customer:
     _id: ObjectIdFieldType
-    user_id: str
+    user_id: ObjectIdFieldType
     name: str
 
 class CustomerSchema(mmdc.class_schema(Customer)):
@@ -29,7 +48,7 @@ class CustomerSchema(mmdc.class_schema(Customer)):
 @dataclass
 class AnamnesisField:
     _id: ObjectIdFieldType
-    user_id: str
+    user_id: ObjectIdFieldType
     name: str
     description: str
     position: int
@@ -42,7 +61,7 @@ class AnamnesisFieldSchema(mmdc.class_schema(AnamnesisField)):
 @dataclass
 class Anamnesis:
     _id: ObjectIdFieldType
-    user_id: str
+    user_id: ObjectIdFieldType
     customer_id: str
     time: datetime
     answers: List[dict]

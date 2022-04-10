@@ -5,15 +5,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-import os
 from flask import Flask, jsonify
-from app import routers
+from app import routers, consts
 
 app = Flask(__name__, static_folder=None)
-app.secret_key = os.getenv("FLASK_SECRET_KEY", None)
+app.secret_key = consts.SECRET_KEY
 app.register_blueprint(routers.auth_router, url_prefix="/auth")
 app.register_blueprint(routers.api_router, url_prefix="/api")
 
 @app.errorhandler(Exception)
-def handle_general_error(error: Exception):
+def _(error: Exception):
     return jsonify(error=str(error)), 500

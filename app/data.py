@@ -1,11 +1,9 @@
-import os
 from contextlib import contextmanager
 from pymongo import MongoClient
-
-MONGO_URI = os.getenv("MONGO_URI", "localhost")
+from . import consts
 
 @contextmanager
 def get_database():
-    client = MongoClient(MONGO_URI)
+    client = MongoClient(consts.MONGO_URI)
     yield client.get_default_database()
     client.close()
