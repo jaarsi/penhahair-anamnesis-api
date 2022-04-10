@@ -9,18 +9,15 @@ marshmallow = "*"
 pymongo = "*"
 marshmallow-dataclass = "*"
 python-dotenv = "*"
-requests-oauthlib = "*"
 dnspython = "*"
+pyjwt = "*"
 
 [dev-packages]
 pylint = "*"
-gunicorn = "*"
-pyopenssl = "*"
 
 [requires]
 python_version = "3.8"
 
 [scripts]
 serve = "flask run --host 0.0.0.0"
-serve_ssl = "flask run --host 0.0.0.0 --cert=adhoc"
 routes = "flask routes"
