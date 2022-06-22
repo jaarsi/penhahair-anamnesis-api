@@ -3,7 +3,7 @@
 from typing import List
 from marshmallow import ValidationError
 from bson import ObjectId
-from .data import get_database
+from .connection import get_database
 from . import types
 
 user_schema = types.UserSchema()
@@ -15,10 +15,13 @@ anamnesis_schema = types.AnamnesisSchema()
 #     fields = get_anamnesis_fields()
 #     return fields
 
-def get_api_consumer(consumer_id: str) -> types.APIConsumer:
+def get_api_consumer(client_id: str, client_secret) -> types.APIClient:
     with get_database() as db:
-        result = db.get_collection("consumers_api").find_one(ObjectId(consumer_id))
-        return types.APIConsumerSchema().load(data=result)
+        result = db.get_collection("clients").find_one({
+            "client_id": client_id,
+            "client_secret": client_secret
+        })
+        return types.APIClientSchema().load(data=result)
 
 # Users
 def find_user(email: str, password: str) -> types.User:

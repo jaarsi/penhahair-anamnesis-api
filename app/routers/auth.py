@@ -29,21 +29,19 @@ def authentication_required(f: Callable):
 
 @router.get("/token")
 def token_route():
-    consumer_token = request.args.get("consumerToken")
-    email = request.args.get("email")
-    password = request.args.get("password")
+    client_id = request.args.get("clientId")
+    client_secret = request.args.get("clientSecret")
 
-    if not services.get_api_consumer(consumer_id=consumer_token):
-        return jsonify(error="Invalid consumer token"), 401
+    if not services.get_api_consumer(client_id, client_secret):
+        return jsonify(error="Invalid credentials"), 401
 
-    if not (user := services.find_user(email, password)):
-        return jsonify(error="Invalid email/password"), 400
-
-    return jwt.encode(
+    token = jwt.encode(
         {
             "exp": datetime.utcnow() + timedelta(days=7),
-            "user_id": user._id,
+            "clientId": client_id,
+            "clientSecret": client_secret,
         },
         consts.SECRET_KEY,
         algorithm="HS256"
     )
+    return { "token": token }, 200

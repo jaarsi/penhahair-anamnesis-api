@@ -17,11 +17,13 @@ class ObjectIdField(mm.fields.Field):
 ObjectIdFieldType = mmdc.NewType("ObjectIdType", str, field=ObjectIdField)
 
 @dataclass
-class APIConsumer:
+class APIClient:
     _id: ObjectIdFieldType
+    client_id: str
+    client_secret: str
     description: str
 
-class APIConsumerSchema(mmdc.class_schema(APIConsumer)):
+class APIClientSchema(mmdc.class_schema(APIClient)):
     class Meta:
         unknown = mm.EXCLUDE
 
